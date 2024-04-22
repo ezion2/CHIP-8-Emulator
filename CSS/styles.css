@@ -1,0 +1,45 @@
+.screen {
+    width: 640px;
+    height: 320px;
+    margin: 40px;
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background-color: black;
+    border: 7px solid black;
+}
+.screen div {
+    flex-basis: 9px;
+    height: 9px;
+    border-width: 1px 1px 0 0;
+    border-color: #000;
+    border-style: solid;
+}
+
+.black {
+    background-color: black;
+}
+
+.white {
+    background-color: white;
+}
+
+.input
+{
+    height: 50px;width: 50px;margin: 5px 4px;
+}
+
+.actual-key {
+    position: relative;
+    top: -15px;
+    right: -10px;
+    font-size: 11px;
+    color: #444;
+}
+
+.ccontainer 
+{
+    width: 250px;
+    padding: 20px;
+}

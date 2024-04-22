@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <!-- Zion E. -->
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width-device-width, intial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
+        <title>Chip-8</title>
+        <link rel="stylesheet" href="CSS/styles.css"  type="text/css">
+
+    </head>
+
+    <body>
+
+        <h1>Chip-8 Emulator</h1>
+
+        Load Program:
+        <select id="program">
+            <option></option>
+        </select>
+
+        <button id="reset">Reset</button> | <input type="color" id="color" value="#FFFFFF"> Change Color</input>
+        <div id="canvas" class="screen"></div>
+        
+        <p>Controls:<br>Chip-8 uses a hexadecimal input. Top right corner signifies corresponding keyboard key.</p>
+        <div class="ccontainer">
+            <div>
+                <button class="input">1<span class="actual-key">1</span></button>
+                <button class="input">2<span class="actual-key">2</span></button>
+                <button class="input">3<span class="actual-key">3</span></button>
+                <button class="input">C<span class="actual-key">4</span></button>
+            </div>
+
+            <div>
+                <button class="input">4<span class="actual-key">q</span></button>
+                <button class="input">5<span class="actual-key">w</span></button>
+                <button class="input">6<span class="actual-key">e</span></button>
+                <button class="input">D<span class="actual-key">r</span></button>
+            </div>
+
+            <div>
+                <button class="input">7<span class="actual-key">a</span></button>
+                <button class="input">8<span class="actual-key">s</span></button>
+                <button class="input">9<span class="actual-key">d</span></button>
+                <button class="input">E<span class="actual-key">f</span></button>
+            </div>
+
+            <div>
+                <button class="input">A<span class="actual-key">z</span></button>
+                <button class="input">0<span class="actual-key">x</span></button>
+                <button class="input">B<span class="actual-key">c</span></button>
+                <button class="input">C<span class="actual-key">v</span></button>
+            </div>
+        </div>
+
+        <p>Sources:<br><a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM">Cowgod's Chip-8 Technical Reference v1.0</a>
+        <br>
+        <a href="https://en.wikipedia.org/wiki/CHIP-8">Chip-8 Wiki</a></p>
+        
+</body>
+
+
+
+
+
+    <script src="./Javascript/chip.js"></script>
+    <script>
+
+        let chip8 = new Chip();
+        let currentRom = null;
+    
+        let select = document.getElementById("program");
+        let reset = document.getElementById("reset");
+        let color = document.getElementById("color");
+    
+        let programs = ['INVADERS','PONG2_ALT','PONG2','BRIX','WIPEOFF', 'IBM', 'TANK', 'VERS', 'TICTAC', 'TRIP8', 'ZERO'];
+    
+    
+        programs.forEach(function(program)
+        {
+            let option = document.createElement('option')
+            option.textContent = program;
+            select.add(option);
+        })
+    
+    
+        reset.addEventListener("click", () =>
+        {
+            chip8.reset()
+            chip8.loadProgram(currentRom)
+        });
+    
+        color.addEventListener("change", () =>
+        {
+            let stylesheet = document.styleSheets[0]
+            stylesheet.cssRules[3].style.backgroundColor = color.value;
+        });
+    
+        select.addEventListener("change", () =>
+        {
+            let value = select.value;
+            if(!value || value == "Select Rom")
+            {
+                return;
+            }
+            let xhr = new XMLHttpRequest;
+            xhr.open("GET", "Roms/" + value + ".c8", true)
+            xhr.responseType = "arraybuffer";
+    
+            xhr.onload = function()
+            {
+                currentRom = new Uint8Array(xhr.response);
+                chip8.loadProgram(currentRom);
+            }
+            xhr.send();
+        })
+    
+    </script>
+    
+
+</html>
